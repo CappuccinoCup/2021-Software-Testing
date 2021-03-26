@@ -14,12 +14,17 @@ module.exports = {
     // 以下代码会使项目运行成功后自动打开浏览器
     // open: true
   },
+
   chainWebpack: config => {
     config
       .plugin('html')
       .tap(args => {
-        args[0].title= 'BTSplus';
+        args[0].title = 'BTSplus';
         return args
       })
   },
+
+  transpileDependencies: [
+    'vuetify'
+  ]
 };

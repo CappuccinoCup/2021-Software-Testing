@@ -1,32 +1,28 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+  <v-app>
     <router-view/>
-  </div>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+  export default {
+    name: 'App',
+    data: () => ({
+      //
+    }),
+    computed: {
+      isDark: function () {
+        // 判断是否是深色主题
+        return this.$vuetify.theme.dark;
+      },
+      whiteOpacity: function () {
+        // 用来调整组件在不同主题下的透明度
+        return this.isDark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)';
+      },
+      backgroundStyle: function () {
+        // 调整背景图片
+        return this.isDark ? 'darkBg' : 'lightBg';
+      }
     }
-  }
-}
-</style>
+  };
+</script>
