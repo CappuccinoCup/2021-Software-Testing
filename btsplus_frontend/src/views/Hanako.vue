@@ -1,6 +1,6 @@
 <template>
   <v-app id="hanako" :class="app.backgroundStyle">
-    <v-content>
+    <v-main>
       <v-container fluid class="mt-n5">
         <v-row align="center" justify="center">
           <v-col cols="12" md="10">
@@ -79,7 +79,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
