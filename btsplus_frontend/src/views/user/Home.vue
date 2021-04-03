@@ -1,5 +1,5 @@
 <template>
-  <v-app id="home">
+  <v-app id="home" :class="app.backgroundStyle">
     <Navigation :items="items"></Navigation>
     <v-main>
       <router-view/>
@@ -14,6 +14,7 @@
     name: 'Home',
     data() {
       return {
+        app: this.$root.$children[0],
         items: [
           {
             name: '我的理财产品',
@@ -45,3 +46,14 @@
     }
   }
 </script>
+
+
+<style>
+  .lightBg {
+    background: url("/img/light_bg.jpg") center fixed !important;
+  }
+
+  .darkBg {
+    background: url("/img/dark_bg.jpg") center fixed !important;
+  }
+</style>

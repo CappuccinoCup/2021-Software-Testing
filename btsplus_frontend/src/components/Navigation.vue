@@ -71,9 +71,16 @@
     },
     methods: {
       openStart: function () {
-        if (this.$route.path !== '/') {
-          this.$router.push({path: '/'});
+        if (!this.hasLoggedIn) {
+          if (this.$route.path !== '/') {
+            this.$router.push({path: '/'});
+          }
+        } else {
+          if (this.$route.path !== '/home') {
+            this.$router.push({path: '/home'});
+          }
         }
+
       },
       openLogin: function () {
         this.$router.push({path: '/login'});
