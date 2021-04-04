@@ -95,25 +95,49 @@
 
         if (!this.formHasErrors) {
           this.app.overlay = true;
-          this.$axios.post('/login', {
-            username: this.username,
-            password: this.password
-          })
-            .then(resp => {
-              if (resp.status === 200 && resp.data.token) {
-                this.app.message(resp.data.message, 'success');
-                this.$store.commit('login', resp.data);
-                this.app.overlay = false;
-                this.$router.replace({path: '/home'});
-              } else {
-                this.app.message('login error', 'error');
-                this.app.overlay = false;
-              }
+          // this.$axios.post('/login', {
+          //   username: this.username,
+          //   password: this.password
+          // })
+          //   .then(resp => {
+          //     if (resp.status === 200 && resp.data.token) {
+          //       this.app.message(resp.data.message, 'success');
+          //       this.$store.commit('login', resp.data);
+          //       this.app.overlay = false;
+          //       this.$router.replace({path: '/teller'});
+          //     } else {
+          //       this.app.message('login error', 'error');
+          //       this.app.overlay = false;
+          //     }
+          //   })
+          //   .catch(() => {
+          //     this.app.message('登录失败', 'error');
+          //     this.app.overlay = false;
+          //   })
+          // 下面这里是临时的假登录，使用时注意修改 authority 的值
+          this.app.message('登录成功', 'success');
+          this.$store.commit('login', {
+            token: 'thisistokenoooooooooooo',
+            userDetails: {
+              username: 'CappuccinoCup',
+              authority: 'TELLER'
+            }
+          });
+          this.app.overlay = false;
+          if (!this.$route.query.redirect) {
+            // 如果没有重定向参数时，跳转到主页
+            if (this.$store.state.userDetails.authority === 'TELLER') {
+              this.$router.replace({path: '/teller'});
+            } else if (this.$store.state.userDetails.authority === 'CUSTOMER') {
+              this.$router.replace({path: '/customer'});
+            } else {
+              this.$router.replace({path: '/'});
+            }
+          } else {
+            this.$router.replace({path: this.$route.query.redirect}).catch(() => {
+              this.app.message('你真是个小调皮呢', 'warning');
             })
-            .catch(() => {
-              this.app.message('登录失败', 'error');
-              this.app.overlay = false;
-            })
+          }
         }
       }
     },

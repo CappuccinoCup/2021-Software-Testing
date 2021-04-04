@@ -46,10 +46,10 @@
     },
     methods: {
       changeTab: function (id) {
-        console.log(id)
+        console.log(id);
       },
       getProds: function () {
-        console.log(this.tab)
+        console.log(this.tab);
         this.wmprods = [
           {
             id: 1,

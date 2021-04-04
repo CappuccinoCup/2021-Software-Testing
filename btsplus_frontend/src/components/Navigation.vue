@@ -76,8 +76,13 @@
             this.$router.push({path: '/'});
           }
         } else {
-          if (this.$route.path !== '/home') {
-            this.$router.push({path: '/home'});
+          if (this.$store.state.userDetails.authority === 'TELLER') {
+            if (this.$route.path !== '/teller') {
+              this.$router.push({path: '/teller'});
+            }
+          } else if (this.$store.state.userDetails.authority === 'CUSTOMER') {
+            if (this.$route.path !== '/customer')
+              this.$router.push({path: '/customer'});
           }
         }
 

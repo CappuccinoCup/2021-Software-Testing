@@ -7,10 +7,14 @@ import Hanako from "../views/Hanako"
 import Madoka from "../views/Madoka";
 
 import Login from "../views/Login"
-import Home from "../views/user/Home"
-import HomeDefault from "../components/HomeDefault"
-import MyProds from "../components/user/MyProds"
-import BuyProds from "../components/user/BuyProds"
+import Home from "../views/Home"
+
+import CustomerWelcome from "../components/customer/Welcome"
+import MyProds from "../components/customer/MyProds"
+import BuyProds from "../components/customer/BuyProds"
+
+import TellerWelcome from "../components/teller/Welcome"
+import DayEnd from "../components/teller/DayEnd"
 
 import Error from "../views/Error";
 
@@ -38,16 +42,17 @@ const routes = [
     path: '/login', name: 'Login',
     component: Login
   },
+
   {
-    path: '/home',
+    path: '/customer',
     component: Home,
     meta: {
       requireAuth: true
     },
     children: [
       {
-        path: '', name: 'HomeDefault',
-        component: HomeDefault
+        path: '', name: 'CustomerWelcome',
+        component: CustomerWelcome
       },
       {
         path: 'myprods', name: 'MyProds',
@@ -57,7 +62,38 @@ const routes = [
         path: 'buyprods', name: 'BuyProds',
         component: BuyProds
       }
-    ]
+    ],
+    beforeEnter: (to, from, next) => {
+      if (store.state.userDetails.authority === 'TELLER') {
+        next({path: '/teller'});
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: '/teller',
+    component: Home,
+    meta: {
+      requireAuth: true
+    },
+    children: [
+      {
+        path: '', name: 'TellerWelcome',
+        component: TellerWelcome
+      },
+      {
+        path: 'dayend', name: 'DayEnd',
+        component: DayEnd
+      }
+    ],
+    beforeEnter: (to, from, next) => {
+      if (store.state.userDetails.authority === 'CUSTOMER') {
+        next({path: '/customer'});
+      } else {
+        next();
+      }
+    }
   },
 
   {
@@ -78,12 +114,10 @@ router.beforeEach((to, from, next) => {
     if (store.state.token) {
       next();
     } else {
-      next();
-      // 为了前端方便测试样式，先让拦截器失效
-      // next({
-      //   path: '/login',
-      //   query: {redirect: to.fullPath} // 登录成功之后重新跳转到该路由
-      // });
+      next({
+        path: '/login',
+        query: {redirect: to.fullPath} // 登录成功之后重新跳转到该路由
+      });
     }
   } else {
     next();
