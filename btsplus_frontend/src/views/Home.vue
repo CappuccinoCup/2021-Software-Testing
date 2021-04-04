@@ -23,7 +23,7 @@
     computed: {
       items: function () {
         let result = [];
-        if (this.$store.state.userDetails.authority === 'TELLER') {
+        if (this.$store.state.userDetails.authority === 'ADMIN') {
           result = [
             {
               name: '日终处理',
@@ -31,12 +31,12 @@
               click: this.openDayEndProcess
             }
           ];
-        } else if (this.$store.state.userDetails.authority === 'CUSTOMER') {
+        } else if (this.$store.state.userDetails.authority === 'TELLER') {
           result = [
             {
-              name: '我的理财产品',
+              name: '查询理财产品盈亏',
               icon: 'mdi-note',
-              click: this.openMyProds
+              click: this.openQueryProds
             },
             {
               name: '购买理财产品',
@@ -50,18 +50,18 @@
     },
     methods: {
       openDayEndProcess: function () {
-        if (this.$route.path !== '/teller/dayend') {
-          this.$router.push({path: '/teller/dayend'});
+        if (this.$route.path !== '/admin/dayend') {
+          this.$router.push({path: '/admin/dayend'});
         }
       },
-      openMyProds: function () {
-        if (this.$route.path !== '/customer/myprods') {
-          this.$router.push({path: '/customer/myprods'});
+      openQueryProds: function () {
+        if (this.$route.path !== '/teller/queryprods') {
+          this.$router.push({path: '/teller/queryprods'});
         }
       },
       openBuyProds: function () {
-        if (this.$route.path !== '/customer/buyprods') {
-          this.$router.push({path: '/customer/buyprods'});
+        if (this.$route.path !== '/teller/buyprods') {
+          this.$router.push({path: '/teller/buyprods'});
         }
       }
     }

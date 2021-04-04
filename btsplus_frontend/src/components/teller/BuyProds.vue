@@ -21,7 +21,7 @@
 
 <script>
   export default {
-    name: 'MyProds',
+    name: 'BuyProds',
     data() {
       return {
         app: this.$root.$children[0],

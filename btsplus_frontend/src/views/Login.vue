@@ -126,10 +126,10 @@
           this.app.overlay = false;
           if (!this.$route.query.redirect) {
             // 如果没有重定向参数时，跳转到主页
-            if (this.$store.state.userDetails.authority === 'TELLER') {
+            if (this.$store.state.userDetails.authority === 'ADMIN') {
+              this.$router.replace({path: '/admin'});
+            } else if (this.$store.state.userDetails.authority === 'TELLER') {
               this.$router.replace({path: '/teller'});
-            } else if (this.$store.state.userDetails.authority === 'CUSTOMER') {
-              this.$router.replace({path: '/customer'});
             } else {
               this.$router.replace({path: '/'});
             }

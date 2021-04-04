@@ -1,12 +1,12 @@
 <template>
-  <DefaultWelcome user-type="客户"></DefaultWelcome>
+  <DefaultWelcome user-type="管理员"></DefaultWelcome>
 </template>
 
 <script>
   import DefaultWelcome from "../DefaultWelcome";
 
   export default {
-    name: 'CustomerWelcome',
+    name: 'AdminWelcome',
     data() {
       return {}
     },

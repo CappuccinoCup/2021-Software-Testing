@@ -2,21 +2,30 @@
   <v-container>
     <v-card :color="app.whiteOpacity">
       <v-card-title>
-        我持有的理财产品
+        查询理财产品盈亏
       </v-card-title>
+      <v-row justify="center">
+        <v-col cols="8">
+          <v-text-field label="请输入用户号" rounded outlined v-model="customerCode"></v-text-field>
+        </v-col>
+        <v-col cols="2">
+          <v-btn outlined class="mt-2 ml-5" @click="queryProds">查询</v-btn>
+        </v-col>
+      </v-row>
+      <v-data-table :headers="headers" :items="wmprods" :loading="prodsLoading" disable-sort
+                    :items-per-page.sync="itemsPerPage" :page.sync="page" :server-items-length="totalItems">
+      </v-data-table>
     </v-card>
-    <v-data-table :headers="headers" :items="wmprods" :loading="prodsLoading" disable-sort
-                  :items-per-page.sync="itemsPerPage" :page.sync="page" :server-items-length="totalItems">
-    </v-data-table>
   </v-container>
 </template>
 
 <script>
   export default {
-    name: 'MyProds',
+    name: 'QueryProds',
     data() {
       return {
         app: this.$root.$children[0],
+        customerCode: '',
         itemsPerPage: 5,
         page: 1,
         totalItems: 10,
@@ -31,7 +40,8 @@
       }
     },
     methods: {
-      getMyProds: function () {
+      queryProds: function () {
+        console.log(this.customerCode);
         this.wmprods = [
           {
             id: 1,
@@ -52,14 +62,11 @@
     },
     watch: {
       itemsPerPage: function () {
-        this.getMyProds();
+        this.queryProds();
       },
       page: function () {
-        this.getMyProds();
+        this.queryProds();
       }
-    },
-    mounted() {
-      this.getMyProds();
     }
   }
 </script>

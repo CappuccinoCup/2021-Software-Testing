@@ -9,12 +9,12 @@ import Madoka from "../views/Madoka";
 import Login from "../views/Login"
 import Home from "../views/Home"
 
-import CustomerWelcome from "../components/customer/Welcome"
-import MyProds from "../components/customer/MyProds"
-import BuyProds from "../components/customer/BuyProds"
+import AdminWelcome from "../components/admin/Welcome"
+import DayEnd from "../components/admin/DayEnd"
 
 import TellerWelcome from "../components/teller/Welcome"
-import DayEnd from "../components/teller/DayEnd"
+import QueryProds from "../components/teller/QueryProds"
+import BuyProds from "../components/teller/BuyProds"
 
 import Error from "../views/Error";
 
@@ -44,23 +44,19 @@ const routes = [
   },
 
   {
-    path: '/customer',
+    path: '/admin',
     component: Home,
     meta: {
       requireAuth: true
     },
     children: [
       {
-        path: '', name: 'CustomerWelcome',
-        component: CustomerWelcome
+        path: '', name: 'AdminWelcome',
+        component: AdminWelcome
       },
       {
-        path: 'myprods', name: 'MyProds',
-        component: MyProds
-      },
-      {
-        path: 'buyprods', name: 'BuyProds',
-        component: BuyProds
+        path: 'dayend', name: 'DayEnd',
+        component: DayEnd
       }
     ],
     beforeEnter: (to, from, next) => {
@@ -83,13 +79,17 @@ const routes = [
         component: TellerWelcome
       },
       {
-        path: 'dayend', name: 'DayEnd',
-        component: DayEnd
+        path: 'queryprods', name: 'QueryProds',
+        component: QueryProds
+      },
+      {
+        path: 'buyprods', name: 'BuyProds',
+        component: BuyProds
       }
     ],
     beforeEnter: (to, from, next) => {
-      if (store.state.userDetails.authority === 'CUSTOMER') {
-        next({path: '/customer'});
+      if (store.state.userDetails.authority === 'ADMIN') {
+        next({path: '/admin'});
       } else {
         next();
       }
