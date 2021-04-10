@@ -15,7 +15,7 @@ import DayEnd from "../components/admin/DayEnd"
 import TellerWelcome from "../components/teller/Welcome"
 import QueryProds from "../components/teller/QueryProds"
 import BuyProds from "../components/teller/BuyProds"
-import TransFlowQuery from "../components/teller/TransFlowQuery"
+import QueryTransFlow from "../components/teller/QueryTransFlow"
 import AccountQuery from "../components/teller/AccountQuery";
 import RepaymentAccounts from "../components/teller/RepaymentAccounts";
 import Error from "../views/Error";
@@ -81,9 +81,9 @@ const routes = [
         component: TellerWelcome
       },
       {
-        path: 'transflowquery',
-        name: 'TransFlowQuery',
-        component: TransFlowQuery
+        path: 'querytransflow',
+        name: 'QueryTransFlow',
+        component: QueryTransFlow
       },
       {
         path: 'accountquery',

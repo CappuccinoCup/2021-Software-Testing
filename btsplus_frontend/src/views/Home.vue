@@ -73,8 +73,8 @@
         }
       },
       openTransFlowQuery: function () {
-        if (this.$route.path !== '/teller/transflowquery') {
-          this.$router.push({path: '/teller/transflowquery'});
+        if (this.$route.path !== '/teller/querytransflow') {
+          this.$router.push({path: '/teller/querytransflow'});
         }
       },
       openQueryProds: function () {

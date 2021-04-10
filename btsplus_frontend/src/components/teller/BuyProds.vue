@@ -179,8 +179,6 @@
           .then(resp => {
             if (resp.data.code === 200) {
               this.wmprods = resp.data.data;
-            } else {
-              this.app.message('获取产品信息失败', 'error');
             }
             this.app.overlay = false;
           })
