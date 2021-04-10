@@ -26,7 +26,22 @@
     },
     methods: {
       dayEndProcess: function () {
-        this.app.message('日终处理完成', 'success');
+        this.app.overlay = true;
+        this.$axios.post('/loans/bills/auto-payment', {
+          // empty request body
+        })
+          .then(resp => {
+            if (resp.data.code === 200) {
+              this.app.message('日终处理完成', 'success');
+            } else {
+              this.app.message('日终处理失败', 'error');
+            }
+            this.app.overlay = false;
+          })
+          .catch(() => {
+            this.app.message('日终处理失败', 'error');
+            this.app.overlay = false;
+          })
       }
     }
   }

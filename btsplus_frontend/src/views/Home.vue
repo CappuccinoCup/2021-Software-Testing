@@ -23,6 +23,9 @@
     computed: {
       items: function () {
         let result = [];
+        if (!this.$store.state.userDetails) {
+          return result;
+        }
         if (this.$store.state.userDetails.role === 2) {
           result = [
             {

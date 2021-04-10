@@ -43,24 +43,22 @@
         this.snackbarType = type;
       },
       updateToken() {
-        // TODO: 完成 updateToken
-        // if (this.$store.state.token) {
-        //   this.$axios.post('/update')
-        //     .then(res => {
-        //       if (res.status === 200 && res.data.token) {
-        //         this.$store.commit('updateToken', res.data);
-        //       }
-        //     })
-        //     .catch(error => {
-        //       if (error.message === 'expired') {
-        //         this.message("login status has expired", 'warning');
-        //       }
-        //     });
-        // }
-        // setTimeout(() => {
-        //   this.updateToken();
-        // }, 10000000)
+        // 如果当前时间大于 expires 中保存的过期时间，
+        // 则直接退出登录
+        if (this.$store.state.token && this.$store.state.expires) {
+          let expires = new Date(this.$store.state.expires);
+          let now = new Date();
+          if (now >= expires) {
+            this.$store.commit("logout");
+          }
+        }
+        setTimeout(() => {
+          this.updateToken();
+        }, 60000)
       }
+    },
+    mounted() {
+      this.updateToken();
     }
   };
 </script>
