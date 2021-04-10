@@ -39,7 +39,8 @@
                           ref="fundPassword" :rules="[() => !!fundPassword || '请输入密码']"></v-text-field>
             <v-text-field v-model="fundAmount" label="金额" outlined :error-messages="fundAmountError"
                           ref="fundAmount" :rules="[() => !!fundAmount || '请输入购买金额']"></v-text-field>
-            <v-text-field v-model="fundPeriod" label="购买时间" outlined
+            <v-text-field v-model="fundPeriod" label="购买时间，如 2-0-1 表示 2年1天" outlined
+                          :error-messages="fundPeriodError"
                           ref="fundPeriod" :rules="[() => !!fundPeriod || '请输入购买时间']"></v-text-field>
           </v-form>
         </v-card-text>
@@ -65,7 +66,8 @@
                           ref="termPassword" :rules="[() => !!termPassword || '请输入密码']"></v-text-field>
             <v-text-field v-model="termAmount" label="金额" outlined :error-messages="termAmountError"
                           ref="termAmount" :rules="[() => !!termAmount || '请输入购买金额']"></v-text-field>
-            <v-text-field v-model="termPeriod" label="购买时间" outlined
+            <v-text-field v-model="termPeriod" label="购买时间，如 2-0-1 表示 2年1天" outlined
+                          :error-messages="termPeriodError"
                           ref="termPeriod" :rules="[() => !!termPeriod || '请输入购买时间']"></v-text-field>
           </v-form>
         </v-card-text>
@@ -102,8 +104,10 @@
     data() {
       return {
         app: this.$root.$children[0],
+        // 标签页
         tab: 0,
         tabProds: ['stock', 'fund', 'term'],
+        // 数据表格
         prodsLoading: false,
         types: [
           {id: 0, name: '股票'},
@@ -112,31 +116,39 @@
         ],
         headers: [
           {text: '产品名', align: 'center', value: 'product.name'},
-          {text: '创建时间', value: 'product.createdTime'},
-          {text: '单价', value: 'daily.price'},
-          {text: '利率', value: 'daily.rate'},
-          {text: '日期', value: 'daily.date'},
+          {text: '创建时间', align: 'center', value: 'product.createdTime'},
+          {text: '单价', align: 'center', value: 'daily.price'},
+          {text: '利率', align: 'center', value: 'daily.rate'},
+          {text: '日期', align: 'center', value: 'daily.date'},
           {text: '', value: 'actions'}
         ],
         wmprods: [],
+        // 对话框
         stockDialog: false,
         fundDialog: false,
         termDialog: false,
+        // 选中的购买产品
         prodId: -1,
+        // 前端表单验证
         formHasErrors: false,
         stockRefs: ['stockAccountNum', 'stockPassword', 'stockCount'],
         fundRefs: ['fundAccountNum', 'fundPassword', 'fundAmount', 'fundPeriod'],
         termRefs: ['termAccountNum', 'termPassword', 'termAmount', 'termPeriod'],
         countError: '',
         fundAmountError: '',
+        fundPeriodError: '',
         termAmountError: '',
+        termPeriodError: '',
+        // 股票购买
         stockAccountNum: '',
         stockPassword: '',
         stockCount: null,
+        // 基金购买
         fundAccountNum: '',
         fundPassword: '',
         fundAmount: null,
         fundPeriod: null,
+        // 定期理财产品购买
         termAccountNum: '',
         termPassword: '',
         termAmount: null,
@@ -234,11 +246,23 @@
         } else {
           this.fundAmountError = '';
         }
+        if (this.fundPeriod && !(/^\d+-\d+-\d+$/.test(this.fundPeriod))) {
+          this.fundPeriodError = '请输入正确的购买时间格式，如 2-1-1 表示2年1月1天';
+          this.formHasErrors = true;
+        } else {
+          this.fundPeriodError = '';
+        }
         if (this.termAmount && !(/^\d+(\.\d+)?$/.test(this.termAmount))) {
           this.termAmountError = '请输入非负浮点数';
           this.formHasErrors = true;
         } else {
           this.termAmountError = '';
+        }
+        if (this.termPeriod && !(/^\d+-\d+-\d+$/.test(this.termPeriod))) {
+          this.termPeriodError = '请输入正确的购买时间格式，如 2-1-1 表示2年1月1天';
+          this.formHasErrors = true;
+        } else {
+          this.termPeriodError = '';
         }
 
         if (!this.formHasErrors) {
@@ -274,10 +298,12 @@
           this.fundDialog = false;
           this.resetForm(this.fundRefs);
           this.fundAmountError = '';
+          this.fundPeriodError = '';
         } else if (prodType === 'term') {
           this.termDialog = false;
           this.resetForm(this.termRefs);
           this.termAmountError = '';
+          this.termPeriodError = '';
         }
       }
     },

@@ -79,9 +79,9 @@
         page: 1,
         prodsLoading: false,
         headers: [
-          {text: '交易账号', align: 'center', value: 'accountNum'},
+          {text: '交易账号', align: 'center', value: 'account.accountNum'},
           {text: '流水号', align: 'center', value: 'transactionNum'},
-          {test: '交易代码', value: 'transactionCode'},
+          {text: '交易代码', align: 'center', value: 'transactionCode'},
           {text: '交易类型', align: 'center', value: 'transactionType'},
           {text: '金额', align: 'center', value: 'amount'},
           {text: '余额', align: 'center', value: 'balance'},
@@ -97,11 +97,11 @@
           params: {
             pageNum: this.page,
             pageSize: this.itemsPerPage,
-            accountNum: this.accountNum,
-            transactionNum: this.transactionNum,
-            transactionCode: this.transactionCode,
-            beginDate: this.beginDate,
-            endDate: this.endDate
+            accountNum: this.accountNum === '' ? null : this.accountNum,
+            transactionNum: this.transactionNum === '' ? null : this.transactionNum,
+            transactionCode: this.transactionCode === '' ? null : this.transactionCode,
+            beginDate: this.beginDate === '' ? null : this.beginDate,
+            endDate: this.endDate === '' ? null : this.endDate
           }
         })
           .then(resp => {
