@@ -95,49 +95,56 @@
 
         if (!this.formHasErrors) {
           this.app.overlay = true;
-          // this.$axios.post('/login', {
-          //   username: this.username,
-          //   password: this.password
-          // })
-          //   .then(resp => {
-          //     if (resp.status === 200 && resp.data.token) {
-          //       this.app.message(resp.data.message, 'success');
-          //       this.$store.commit('login', resp.data);
-          //       this.app.overlay = false;
-          //       this.$router.replace({path: '/teller'});
-          //     } else {
-          //       this.app.message('login error', 'error');
-          //       this.app.overlay = false;
-          //     }
-          //   })
-          //   .catch(() => {
-          //     this.app.message('登录失败', 'error');
-          //     this.app.overlay = false;
-          //   })
-          // 下面这里是临时的假登录，使用时注意修改 authority 的值
-          this.app.message('登录成功', 'success');
-          this.$store.commit('login', {
-            token: 'thisistokenoooooooooooo',
-            userDetails: {
-              username: 'CappuccinoCup',
-              authority: 'TELLER'
-            }
-          });
-          this.app.overlay = false;
-          if (!this.$route.query.redirect) {
-            // 如果没有重定向参数时，跳转到主页
-            if (this.$store.state.userDetails.authority === 'ADMIN') {
-              this.$router.replace({path: '/admin'});
-            } else if (this.$store.state.userDetails.authority === 'TELLER') {
-              this.$router.replace({path: '/teller'});
-            } else {
-              this.$router.replace({path: '/'});
-            }
-          } else {
-            this.$router.replace({path: this.$route.query.redirect}).catch(() => {
-              this.app.message('你真是个小调皮呢', 'warning');
+          this.$axios.post('/user/login', {
+            username: this.username,
+            password: this.password
+          })
+            .then(resp => {
+              if (resp.data.code === 200) {
+                // 保存 token 信息
+                this.$store.commit('login', resp.data.data);
+
+                // 获取用户信息
+                this.$axios.get('/user/curr', {
+                  params: {}
+                })
+                  .then(resp => {
+                    if (resp.data.code === 200) {
+                      this.$store.commit('userDetails', resp.data.data);
+                      // 页面跳转
+                      if (!this.$route.query.redirect) {
+                        // 如果没有重定向参数时，跳转到主页
+                        if (this.$store.state.userDetails.role === 2) {
+                          this.$router.replace({path: '/admin'});
+                        } else if (this.$store.state.userDetails.role === 1) {
+                          this.$router.replace({path: '/teller'});
+                        } else {
+                          this.$router.replace({path: '/'});
+                        }
+                      } else {
+                        this.$router.replace({path: this.$route.query.redirect}).catch(() => {
+                          this.app.message('你真是个小调皮呢', 'warning');
+                        })
+                      }
+                    } else {
+                      this.app.message(resp.data.message, 'error');
+                    }
+                  })
+                  .catch(() => {
+                    this.app.message('获取用户信息失败', 'error');
+                  });
+                this.app.overlay = false;
+              } else {
+                this.app.message(resp.data.message, 'error');
+                this.app.overlay = false;
+              }
             })
-          }
+            .catch(() => {
+              this.app.message('登录失败', 'error');
+              this.app.overlay = false;
+            });
+
+          this.app.overlay = false;
         }
       }
     },

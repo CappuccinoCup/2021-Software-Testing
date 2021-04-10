@@ -24,7 +24,7 @@ _axios.interceptors.request.use(
     // Do something before request is sent
     if (localStorage.getItem('token')) {
       // 判断是否有token，若存在，每个http header加上token
-      config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+      config.headers['login-token'] = `Bear ${localStorage.getItem('token')}`;
     }
     return config;
   },
