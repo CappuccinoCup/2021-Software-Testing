@@ -76,13 +76,13 @@
             this.$router.push({path: '/'});
           }
         } else {
-          if (this.$store.state.userDetails.authority === 'TELLER') {
+          if (this.$store.state.userDetails.role === 1) {
             if (this.$route.path !== '/teller') {
               this.$router.push({path: '/teller'});
             }
-          } else if (this.$store.state.userDetails.authority === 'CUSTOMER') {
-            if (this.$route.path !== '/customer')
-              this.$router.push({path: '/customer'});
+          } else if (this.$store.state.userDetails.role === 2) {
+            if (this.$route.path !== '/admin')
+              this.$router.push({path: '/admin'});
           }
         }
 

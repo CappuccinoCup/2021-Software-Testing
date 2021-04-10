@@ -143,8 +143,6 @@
               this.app.message('登录失败', 'error');
               this.app.overlay = false;
             });
-
-          this.app.overlay = false;
         }
       }
     },

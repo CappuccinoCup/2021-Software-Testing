@@ -23,7 +23,7 @@
     computed: {
       items: function () {
         let result = [];
-        if (this.$store.state.userDetails.authority === 'ADMIN') {
+        if (this.$store.state.userDetails.role === 2) {
           result = [
             {
               name: '日终处理',
@@ -31,7 +31,7 @@
               click: this.openDayEndProcess
             }
           ];
-        } else if (this.$store.state.userDetails.authority === 'TELLER') {
+        } else if (this.$store.state.userDetails.role === 1) {
           result = [
             {
               name: '柜面还款',

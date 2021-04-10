@@ -16,8 +16,8 @@ import TellerWelcome from "../components/teller/Welcome"
 import QueryProds from "../components/teller/QueryProds"
 import BuyProds from "../components/teller/BuyProds"
 import TransFlowQuery from "../components/teller/TransFlowQuery"
-import AccountQuery from "@/components/teller/AccountQuery";
-import RepaymentAccounts from "@/components/teller/RepaymentAccounts";
+import AccountQuery from "../components/teller/AccountQuery";
+import RepaymentAccounts from "../components/teller/RepaymentAccounts";
 import Error from "../views/Error";
 
 Vue.use(VueRouter);
@@ -62,7 +62,7 @@ const routes = [
       }
     ],
     beforeEnter: (to, from, next) => {
-      if (store.state.userDetails.authority === 'TELLER') {
+      if (store.state.userDetails.role === 1) {
         next({path: '/teller'});
       } else {
         next();
@@ -105,7 +105,7 @@ const routes = [
       }
     ],
     beforeEnter: (to, from, next) => {
-      if (store.state.userDetails.authority === 'ADMIN') {
+      if (store.state.userDetails.role === 2) {
         next({path: '/admin'});
       } else {
         next();

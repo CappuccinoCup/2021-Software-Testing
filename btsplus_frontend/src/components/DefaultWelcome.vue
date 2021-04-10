@@ -32,7 +32,7 @@
     },
     computed: {
       username: function () {
-        return this.$store.state.userDetails ? this.$store.state.userDetails.username : '友人A';
+        return this.$store.state.userDetails ? this.$store.state.userDetails.nickname : '友人A';
       }
     }
   }
