@@ -23,6 +23,9 @@
     computed: {
       items: function () {
         let result = [];
+        if (!this.$store.state.userDetails) {
+          return result;
+        }
         if (this.$store.state.userDetails.role === 2) {
           result = [
             {
@@ -70,8 +73,8 @@
         }
       },
       openTransFlowQuery: function () {
-        if (this.$route.path !== '/teller/transflowquery') {
-          this.$router.push({path: '/teller/transflowquery'});
+        if (this.$route.path !== '/teller/querytransflow') {
+          this.$router.push({path: '/teller/querytransflow'});
         }
       },
       openQueryProds: function () {

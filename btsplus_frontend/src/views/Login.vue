@@ -126,6 +126,7 @@
                           this.app.message('你真是个小调皮呢', 'warning');
                         })
                       }
+                      this.app.message('登录成功', 'success');
                     } else {
                       this.app.message(resp.data.message, 'error');
                     }
