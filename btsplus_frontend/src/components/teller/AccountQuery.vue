@@ -27,8 +27,8 @@
               >账号面板
               </v-toolbar>
               <v-card-text>
-                <v-text-field full-width="" label="身份证号" class="mt-6 ml-3" dense outlined
-                              v-model="IDNumber"></v-text-field>
+                <v-text-field label="身份证号" class="mt-6 ml-3" dense outlined
+                              v-model="customerCode"></v-text-field>
               </v-card-text>
               <v-card-actions class="justify-end">
                 <v-btn
@@ -56,18 +56,44 @@ export default {
   data() {
     return {
       app: this.$root.$children[0],
-      IDNumber: '',
+      customerCode: '',
       accounts: [],
     }
   },
   methods: {
     queryAccounts: function () {
-
+      // let api = `/customer/${this.customerCode}/loans`;
+      // let accounts = [];
+      // this.$axios.get(api, {
+      //   params: {}
+      // }).then(resp => {
+      //   if (resp.data.code === 200) {
+      //     accounts = resp.data.data;
+      //   }
+      // })
+      // if (accounts.length === 0) {
+      //   this.app.message("用户无贷款账户")
+      // } else {
+      //   this.$router.push({
+      //     path: '/teller/repaymentaccounts',
+      //     name: 'RepaymentAccounts',
+      //     query: {
+      //       customerCode: this.customerCode
+      //     }
+      //   });
+      // }
+      this.$router.push({
+        path: '/teller/repaymentaccounts',
+        name: 'RepaymentAccounts',
+        query: {
+          customerCode: this.customerCode
+        }
+      });
     },
-    closeDialog: function () {
-      this.IDNumber = "";
-    }
 
+    closeDialog: function () {
+      this.customerCode = "";
+    }
   }
 }
 </script>

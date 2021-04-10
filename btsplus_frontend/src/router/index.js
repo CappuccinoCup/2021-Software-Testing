@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/index'
 
-import Start from '../views/Start.vue'
+// import Start from '../views/Start.vue'
 import Hanako from "../views/Hanako"
 import Madoka from "../views/Madoka";
 
@@ -18,7 +18,9 @@ import BuyProds from "../components/teller/BuyProds"
 import TransFlowQuery from "../components/teller/TransFlowQuery"
 import AccountQuery from "../components/teller/AccountQuery";
 import RepaymentAccounts from "../components/teller/RepaymentAccounts";
+import Bill from "@/components/teller/Bill";
 import Error from "../views/Error";
+import Start from "@/views/Start";
 
 Vue.use(VueRouter);
 
@@ -92,8 +94,13 @@ const routes = [
       },
       {
         path: 'repaymentaccounts',
-        name: 'RepaymentAccount',
+        name: 'RepaymentAccounts',
         component: RepaymentAccounts
+      },
+      {
+        path: 'bill',
+        name: 'Bill',
+        component: Bill
       },
       {
         path: 'queryprods', name: 'QueryProds',

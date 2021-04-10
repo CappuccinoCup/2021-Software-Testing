@@ -80,7 +80,7 @@
         </v-col>
 
       </v-row>
-      <v-data-table :headers="headers" :items="trans" :loading="prodsLoading" disable-sort
+      <v-data-table :headers="headers" :items="trans" :loading="prodsLoading" sort-by="serialNumber"
                     :items-per-page.sync="itemsPerPage" :page.sync="page" :server-items-length="totalItems">
       </v-data-table>
     </v-card>
