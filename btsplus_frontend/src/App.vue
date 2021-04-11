@@ -44,17 +44,20 @@
         this.snackbarType = type;
       },
       getTime() {
-        this.$axios.get('/system/time')
-          .then(resp => {
-            if (resp.data.code === 200) {
-              this.systemTime = new Date(resp.data.data);
-            } else {
+        // 从后端获取系统时间，如果未登录则不获取
+        if (this.$store.state.token) {
+          this.$axios.get('/system/time')
+            .then(resp => {
+              if (resp.data.code === 200) {
+                this.systemTime = new Date(resp.data.data);
+              } else {
+                this.systemTime = new Date();
+              }
+            })
+            .catch(() => {
               this.systemTime = new Date();
-            }
-          })
-          .catch(() => {
-            this.systemTime = new Date();
-          });
+            });
+        }
         setTimeout(() => {
           this.getTime();
         }, 60000)
