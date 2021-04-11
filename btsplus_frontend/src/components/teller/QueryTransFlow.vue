@@ -48,6 +48,14 @@
               </v-menu>
             </v-col>
             <v-col cols="4">
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn outlined class="mt-3 ml-5" elevation="3" icon @click="order" v-bind="attrs" v-on="on">
+                    <v-icon>mdi-{{ orderBy === 'asc' ? 'arrow-up' : 'arrow-down' }}</v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ orderBy === 'asc' ? '升序' : '降序' }}</span>
+              </v-tooltip>
               <v-btn outlined class="mt-3 ml-5" elevation="3" plain @click="queryProds">搜索</v-btn>
               <v-btn outlined class="mt-3 ml-5" elevation="3" plain @click="resetForm">重置</v-btn>
             </v-col>
@@ -75,6 +83,7 @@
         startDateMenu: false,
         endDate: '',
         endDateMenu: false,
+        orderBy: 'asc',
         itemsPerPage: 5,
         page: 1,
         prodsLoading: false,
@@ -101,7 +110,8 @@
             transactionNum: this.transactionNum === '' ? null : this.transactionNum,
             transactionCode: this.transactionCode === '' ? null : this.transactionCode,
             beginDate: this.beginDate === '' ? null : this.beginDate,
-            endDate: this.endDate === '' ? null : this.endDate
+            endDate: this.endDate === '' ? null : this.endDate,
+            orderBy: this.orderBy
           }
         })
           .then(resp => {
@@ -115,10 +125,19 @@
             this.app.overlay = false;
           })
       },
+      order: function () {
+        if (this.orderBy === 'asc') {
+          this.orderBy = 'desc';
+        } else {
+          this.orderBy = 'asc';
+        }
+        this.queryProds();
+      },
       resetForm: function () {
         this.refs.forEach(e => {
           this.$refs[e].reset();
-        })
+        });
+        this.orderBy = 'asc';
       }
     },
     watch: {
