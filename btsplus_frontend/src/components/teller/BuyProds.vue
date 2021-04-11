@@ -11,7 +11,7 @@
           <v-form ref="stockForm" class="ma-7 mb-n5">
             <v-text-field v-model="stockAccountNum" label="银行账户/存折号" ref="stockAccountNum" outlined
                           :rules="[() => !!stockAccountNum || '请输入银行账户/存折号']"></v-text-field>
-            <v-text-field v-model="stockPassword" label="密码" outlined
+            <v-text-field v-model="stockPassword" label="密码" outlined type="password"
                           ref="stockPassword" :rules="[() => !!stockPassword || '请输入密码']"></v-text-field>
             <v-text-field v-model="stockCount" label="购买数量" outlined :error-messages="countError"
                           ref="stockCount" :rules="[() => !!stockCount || '请输入购买数量']"></v-text-field>
@@ -35,7 +35,7 @@
           <v-form ref="fundForm" class="ma-7 mb-n5">
             <v-text-field v-model="fundAccountNum" label="银行账户/存折号" ref="fundAccountNum" outlined
                           :rules="[() => !!fundAccountNum || '请输入银行账户/存折号']"></v-text-field>
-            <v-text-field v-model="fundPassword" label="密码" outlined
+            <v-text-field v-model="fundPassword" label="密码" outlined type="password"
                           ref="fundPassword" :rules="[() => !!fundPassword || '请输入密码']"></v-text-field>
             <v-text-field v-model="fundAmount" label="金额" outlined :error-messages="fundAmountError"
                           ref="fundAmount" :rules="[() => !!fundAmount || '请输入购买金额']"></v-text-field>
@@ -62,7 +62,7 @@
           <v-form ref="termForm" class="ma-7 mb-n5">
             <v-text-field v-model="termAccountNum" label="银行账户/存折号" ref="termAccountNum" outlined
                           :rules="[() => !!termAccountNum || '请输入银行账户/存折号']"></v-text-field>
-            <v-text-field v-model="termPassword" label="密码" outlined
+            <v-text-field v-model="termPassword" label="密码" outlined type="password"
                           ref="termPassword" :rules="[() => !!termPassword || '请输入密码']"></v-text-field>
             <v-text-field v-model="termAmount" label="金额" outlined :error-messages="termAmountError"
                           ref="termAmount" :rules="[() => !!termAmount || '请输入购买金额']"></v-text-field>

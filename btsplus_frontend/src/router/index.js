@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/index'
 
-// import Start from '../views/Start.vue'
+import Start from '../views/Start'
 import Hanako from "../views/Hanako"
 import Madoka from "../views/Madoka";
 
@@ -18,9 +18,9 @@ import BuyProds from "../components/teller/BuyProds"
 import QueryTransFlow from "../components/teller/QueryTransFlow"
 import AccountQuery from "../components/teller/AccountQuery";
 import RepaymentAccounts from "../components/teller/RepaymentAccounts";
-import Bill from "@/components/teller/Bill";
+import Bill from "../components/teller/Bill";
+
 import Error from "../views/Error";
-import Start from "@/views/Start";
 
 Vue.use(VueRouter);
 
