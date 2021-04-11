@@ -269,12 +269,8 @@
           this.app.overlay = true;
           let url = '/financial/' + prodType + '/' + this.prodId + '/purchase';
           this.$axios.post(url, form)
-            .then(resp => {
-              if (resp.data.code === 200) {
-                this.app.message('购买成功！', 'success');
-              } else {
-                this.app.message(resp.data.message, 'error')
-              }
+            .then(() => {
+              this.app.message('购买成功！', 'success');
               this.app.overlay = false;
             })
             .catch(() => {

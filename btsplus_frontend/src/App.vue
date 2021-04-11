@@ -20,7 +20,8 @@
       overlay: false,
       showSnackbar: false,
       snackbarMessage: '',
-      snackbarType: ''
+      snackbarType: '',
+      systemTime: null,
     }),
     computed: {
       isDark: function () {
@@ -42,13 +43,29 @@
         this.snackbarMessage = message;
         this.snackbarType = type;
       },
+      getTime() {
+        this.$axios.get('/system/time')
+          .then(resp => {
+            if (resp.data.code === 200) {
+              this.systemTime = new Date(resp.data.data);
+            } else {
+              this.systemTime = new Date();
+            }
+          })
+          .catch(() => {
+            this.systemTime = new Date();
+          });
+        setTimeout(() => {
+          this.getTime();
+        }, 60000)
+      },
       updateToken() {
         // 如果当前时间大于 expires 中保存的过期时间，
         // 则直接退出登录
         if (this.$store.state.token && this.$store.state.expires) {
           let expires = new Date(this.$store.state.expires);
-          let now = new Date();
-          if (now >= expires) {
+          let now = this.systemTime;
+          if (now && now >= expires) {
             this.$store.commit("logout");
           }
         }
@@ -58,6 +75,7 @@
       }
     },
     mounted() {
+      this.getTime();
       this.updateToken();
     }
   };
