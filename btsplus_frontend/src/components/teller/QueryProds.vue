@@ -57,7 +57,7 @@
           {text: '产品名', align: 'center', value: 'product.name'},
           {text: '购买日期', value: 'purchase.beginDate'},
           {text: '持有数量', value: 'purchase.count'},
-          {text: '买时单价', value: 'purchase.price'},
+          {text: '买时单价', value: 'purchase.initPrice'},
           {text: '当前单价', value: 'daily.price'}
         ],
         fundHeaders: [
