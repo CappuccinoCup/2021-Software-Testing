@@ -33,12 +33,12 @@
               <v-card-actions class="justify-end">
                 <v-btn
                   text
-                  @click="dialog.value = false & closeDialog()"
+                  @click="queryAccounts"
                 >查找
                 </v-btn>
                 <v-btn
                   text
-                  @click="dialog.value = false & closeDialog()"
+                  @click="dialog.value = false & closeDialog"
                 >取消
                 </v-btn>
               </v-card-actions>
@@ -62,26 +62,6 @@ export default {
   },
   methods: {
     queryAccounts: function () {
-      // let api = `/customer/${this.customerCode}/loans`;
-      // let accounts = [];
-      // this.$axios.get(api, {
-      //   params: {}
-      // }).then(resp => {
-      //   if (resp.data.code === 200) {
-      //     accounts = resp.data.data;
-      //   }
-      // })
-      // if (accounts.length === 0) {
-      //   this.app.message("用户无贷款账户")
-      // } else {
-      //   this.$router.push({
-      //     path: '/teller/repaymentaccounts',
-      //     name: 'RepaymentAccounts',
-      //     query: {
-      //       customerCode: this.customerCode
-      //     }
-      //   });
-      // }
       this.$router.push({
         path: '/teller/repaymentaccounts',
         name: 'RepaymentAccounts',
@@ -89,6 +69,7 @@ export default {
           customerCode: this.customerCode
         }
       });
+      this.customerCode=""
     },
 
     closeDialog: function () {
