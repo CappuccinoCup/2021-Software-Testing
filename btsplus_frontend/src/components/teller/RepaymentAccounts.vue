@@ -7,7 +7,7 @@
       <v-card-text>
         <p>
           <span class="mr-4"><b>客户名：</b>{{ this.customer.name }}</span>
-          <span class="mr-4"><b>性别：</b>{{ this.customer.sex === 0 ? "男" : "女" }}</span>
+          <span class="mr-4"><b>性别：</b>{{ (this.customer === {}) ? "" : (this.customer.sex === 0 ? "男" : "女") }}</span>
           <span class="mr-4"><b>客户号：</b>{{ this.customer.code }}</span>
         </p>
         <v-data-table class="elevation-3" :headers="headers" :items="accounts" :loading="prodsLoading" disable-sort
@@ -123,6 +123,8 @@ export default {
         //console.log(data);
         if (data.length === 0) {
           this.app.message('目前没有贷款账户');
+          this.customer = {};
+          this.accounts = [];
         } else {
           let customer = data[0].customer;
           let accounts = [];

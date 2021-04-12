@@ -334,7 +334,7 @@ export default {
       let endYear = end[0];
       let endMonth = end[1];
       let endDate = end[2];
-      let now = this.app.systemTime;
+      let now = this.$store.state.systemTime;
       let nowYear = now.getFullYear();
       let nowMonth = now.getMonth() + 1;
       let nowDate = now.getDate();
