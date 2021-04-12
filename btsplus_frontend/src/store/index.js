@@ -8,7 +8,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('token') || null,
     expires: localStorage.getItem('expires') || null,
     userDetails: JSON.parse(localStorage.getItem('userDetails')) || null,
-    systemTime: JSON.parse(localStorage.getItem('systemTime')) || new Date(),
+    systemTime: new Date(localStorage.getItem('systemTime')) || new Date(),
     themeIsDark: localStorage.getItem('theme') === 'dark'
   },
   mutations: {
@@ -23,17 +23,19 @@ export default new Vuex.Store({
       state.userDetails = userDetails;
     },
     systemTime(state, systemTime) {
-      localStorage.setItem('systemTime', JSON.stringify(systemTime));
-      state.systemTime = systemTime;
+      localStorage.setItem('systemTime', systemTime);
+      state.systemTime = new Date(systemTime);
     },
     logout(state) {
-      // 移除token
+      // 移除token等信息
       localStorage.removeItem('token');
       localStorage.removeItem('expires');
       localStorage.removeItem('userDetails');
-      state.userDetails = null;
+      localStorage.removeItem('systemTime');
       state.token = null;
       state.expires = null;
+      state.userDetails = null;
+      state.systemTime = null;
     },
     changeTheme(state, isDark) {
       const theme = isDark ? 'dark' : 'light';
