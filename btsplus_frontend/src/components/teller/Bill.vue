@@ -19,7 +19,8 @@
             <!--部分还款 tooltip-->
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
-                <v-icon v-bind="attrs" v-on="on" @click="repayPartDialog=true" :disabled="item.status===4" class="ml-3">
+                <v-icon v-bind="attrs" v-on="on" @click="openRepayPartDialog(item)"
+                        :disabled="item.status===4" class="ml-3">
                   mdi-clipboard-text-search
                 </v-icon>
               </template>
@@ -30,7 +31,8 @@
             <!--全额还款 tooltip -->
             <v-tooltip bottom>
               <template v-slot:activator="{on, attrs}">
-                <v-icon v-bind="attrs" v-on="on" @click="repayAllDialog=true" :disabled="item.status===4" class="ml-3">
+                <v-icon v-bind="attrs" v-on="on" @click="openRepayAllDialog(item)" :disabled="item.status===4"
+                        class="ml-3">
                   mdi-code-greater-than-or-equal
                 </v-icon>
               </template>
@@ -70,19 +72,19 @@
           </v-toolbar>
           <v-card-text class="mt-5">
             <v-row>
-              <v-col cols="6"><b>计划本金: </b>{{ item.planAmount }}</v-col>
-              <v-col cols="6"><b>实际本金: </b>{{ item.remainAmount }}</v-col>
+              <v-col cols="6"><b>计划本金: </b>{{ planAmount }}</v-col>
+              <v-col cols="6"><b>实际本金: </b>{{ remainAmount }}</v-col>
             </v-row>
             <v-row>
-              <v-col><b>计划利息: </b>{{ item.planInterest }}</v-col>
-              <v-col><b>实际利息: </b>{{ item.remainInterest }}</v-col>
+              <v-col><b>计划利息: </b>{{ planInterest }}</v-col>
+              <v-col><b>实际利息: </b>{{ remainInterest }}</v-col>
             </v-row>
             <v-row>
-              <v-col><b>计划总计: </b>{{ item.planAmount + item.planInterest }}</v-col>
-              <v-col><b>实际总计: </b>{{ item.remainAmount + item.remainInterest }}</v-col>
+              <v-col><b>计划总计: </b>{{ planAmount + planInterest }}</v-col>
+              <v-col><b>实际总计: </b>{{ remainAmount + remainInterest }}</v-col>
             </v-row>
             <v-row>
-              <v-col cols="6"><b>罚金: </b>{{ computePenalty(item) }}</v-col>
+              <v-col cols="6"><b>罚金: </b>{{ penalty }}</v-col>
               <v-col cols="5">
                 <v-text-field label="还款金额" dense outlined v-model="partAmount"></v-text-field>
               </v-col>
@@ -95,7 +97,7 @@
                                   outlined></v-text-field>
                   </v-col>
                   <v-col cols="6">
-                    <v-text-field v-model="password" label="password" append-icon="mdi-fingerprint" dense
+                    <v-text-field v-model="password" label="密码" append-icon="mdi-fingerprint" dense type="password"
                                   outlined></v-text-field>
                   </v-col>
                 </v-row>
@@ -105,7 +107,7 @@
           <v-card-actions class="justify-end">
             <v-btn
               text
-              @click="repayPart(item)"
+              @click="repayPart"
             >还款
             </v-btn>
             <v-btn
@@ -133,20 +135,20 @@
           </v-toolbar>
           <v-card-text class="mt-5">
             <v-row>
-              <v-col cols="6"><b>计划本金: </b>{{ item.planAmount }}</v-col>
-              <v-col cols="6"><b>实际本金: </b>{{ item.remainAmount }}</v-col>
+              <v-col cols="6"><b>计划本金: </b>{{ planAmount }}</v-col>
+              <v-col cols="6"><b>实际本金: </b>{{ remainAmount }}</v-col>
             </v-row>
             <v-row>
-              <v-col><b>计划利息: </b>{{ item.planInterest }}</v-col>
-              <v-col><b>实际利息: </b>{{ item.remainInterest }}</v-col>
+              <v-col><b>计划利息: </b>{{ planInterest }}</v-col>
+              <v-col><b>实际利息: </b>{{ remainInterest }}</v-col>
             </v-row>
             <v-row>
-              <v-col><b>计划总计: </b>{{ item.planAmount + item.planInterest }}</v-col>
-              <v-col><b>实际总计: </b>{{ item.remainAmount + item.remainInterest }}</v-col>
+              <v-col><b>计划总计: </b>{{ planAmount + planInterest }}</v-col>
+              <v-col><b>实际总计: </b>{{ remainAmount + remainInterest }}</v-col>
             </v-row>
             <v-row>
               <v-col cols="6"></v-col>
-              <v-col cols="6"><b>罚金: </b>{{ computePenalty(item) }}</v-col>
+              <v-col cols="6"><b>罚金: </b>{{ penalty }}</v-col>
             </v-row>
             <v-row justify="center">
               <v-col cols="12">
@@ -156,7 +158,7 @@
                                   dense></v-text-field>
                   </v-col>
                   <v-col cols="5">
-                    <v-text-field v-model="password" label="password" append-icon="mdi-fingerprint" outlined
+                    <v-text-field v-model="password" label="密码" append-icon="mdi-fingerprint" outlined type="password"
                                   dense></v-text-field>
                   </v-col>
                 </v-row>
@@ -167,7 +169,7 @@
           <v-card-actions class="justify-end">
             <v-btn
               text
-              @click="repayAll(item)"
+              @click="repayAll"
             >还款
             </v-btn>
             <v-btn
@@ -202,6 +204,12 @@ export default {
       repayPartDialog: false,
       partAmount: 0,
       repayAllDialog: false,
+      itemId: 0,
+      planAmount: 0,
+      planInterest: 0,
+      remainAmount: 0,
+      remainInterest: 0,
+      penalty: 0,
       headers: [
         {text: '期号', align: 'center', value: 'planNum'},
         {text: '开始时间', align: 'center', value: 'beginDate'},
@@ -215,74 +223,6 @@ export default {
       ],
       bills: [],
       loan: {},
-      // bills: [
-      //   {
-      //     "id": 67,
-      //     "creator": null,
-      //     "createdTime": "2021-04-03 20:17",
-      //     "updatedTime": "2021-04-03 20:17",
-      //     "beginDate": "2021-04-03",
-      //     "endDate": "2021-05-03",
-      //     "planNum": 1,
-      //     "planAmount": 33222.4798,
-      //     "planInterest": 333.3,
-      //     "remainAmount": 33222.4798,
-      //     "remainInterest": 333.3,
-      //     "status": 1
-      //   },
-      //   {
-      //     "id": 68,
-      //     "creator": null,
-      //     "createdTime": "2021-04-03 20:17",
-      //     "updatedTime": "2021-04-03 20:17",
-      //     "beginDate": "2021-05-03",
-      //     "endDate": "2021-06-03",
-      //     "planNum": 2,
-      //     "planAmount": 33333.2103,
-      //     "planInterest": 222.5695,
-      //     "remainAmount": 33333.2103,
-      //     "remainInterest": 222.5695,
-      //     "status": 1
-      //   },
-      //   {
-      //     "id": 69,
-      //     "creator": null,
-      //     "createdTime": "2021-04-03 20:17",
-      //     "updatedTime": "2021-04-03 20:17",
-      //     "beginDate": "2021-06-03",
-      //     "endDate": "2021-07-03",
-      //     "planNum": 3,
-      //     "planAmount": 33444.3099,
-      //     "planInterest": 111.4699,
-      //     "remainAmount": 33444.3099,
-      //     "remainInterest": 111.4699,
-      //     "status": 1
-      //   },
-      // ],
-
-      // loan: {
-      //   "id": 123,
-      //   "iouNum": "L2104032014071",
-      //   "customer": {
-      //     "id": 13,
-      //     "code": "AB2121202104031",
-      //     "name": "请不要侮辱二次元",
-      //     "creator": null,
-      //     "createdTime": "2021-04-03 19:33",
-      //     "sex": 0,
-      //     "phone": "13333333333",
-      //     "email": "3333333@fudan.edu.cn",
-      //     "address": "上海市杨浦区键盘侠只能出门右转2500号"
-      //   },
-      //   "creator": null,
-      //   "createdTime": "2021-04-03 20:14",
-      //   "loanDate": "2021-04-03",
-      //   "productCode": "20005",
-      //   "productName": "请键盘侠出门右转贷款",
-      //   "amount": 100000,
-      //   "interest": 667.3394,
-      //   "total": 100667.3394
-      // },
     }
   },
 
@@ -358,9 +298,18 @@ export default {
       }
       return 2;
     },
-
+    isNumber: function isNumber(obj) {
+      return typeof obj === 'number' && !isNaN(obj)
+    },
     judgeAccount: function () {
-      if (this.accountNum === "") {
+      let amount = this.remainInterest + this.remainAmount + this.penalty;
+      if (this.isNumber(this.partAmount)) {
+        this.app.message("还款金额需是数字");
+        this.formHasErrors = true;
+      } else if (this.partAmount > amount) {
+        this.app.message("超过所需还款的额度")
+        this.formHasErrors = true;
+      } else if (this.accountNum === "") {
         this.formHasErrors = true;
         this.app.message("银行账户不能为空");
       } else if (this.password === "") {
@@ -372,9 +321,25 @@ export default {
 
     },
 
+    getItemData: function (item) {
+      this.itemId = item.id;
+      this.planInterest = item.planInterest;
+      this.planAmount = item.planAmount;
+      this.remainAmount = item.remainAmount;
+      this.remainInterest = item.remainInterest;
+      this.penalty = this.computePenalty(item);
+    },
+    openRepayPartDialog: function (item) {
+      this.getItemData(item);
+      this.repayPartDialog = true;
+    },
     closeRepayPartDialog: function () {
       this.clearForm();
       this.repayPartDialog = false;
+    },
+    openRepayAllDialog: function (item) {
+      this.getItemData(item);
+      this.repayAllDialog = true;
     },
     closeRepayAllDialog: function () {
       this.clearForm();
@@ -385,17 +350,19 @@ export default {
       this.password = "";
       this.partAmount = 0;
     },
-    checkPartAmount: function (item) {
-      let amount = item.remainInterest + item.remainAmount + this.computePenalty(item);
+
+    checkPartAmount: function () {
+      let amount = this.remainInterest + this.remainAmount + this.penalty;
       if (this.partAmount > amount) {
+        this.app.message("超过所需还款的额度")
         this.partAmount = amount;
       }
     },
 
-    repayPart: function (item) {
+    repayPart: function () {
       this.judgeAccount();
       if (!this.formHasErrors) {
-        let api = `/customer/loan/bill/${item.id}/payment`;
+        let api = `/customer/loan/bill/${this.itemId}/payment`;
         this.$axios.put(api, {
           accountNum: this.accountNum,
           password: this.password,
@@ -408,28 +375,37 @@ export default {
             this.app.message("系统出现故障");
           }
         })
+          .catch(() => {
+            this.app.message("账户余额不足或账户不存在");
+          })
         this.closeRepayPartDialog();
       }
 
     },
 
-    repayAll: function (item) {
+    repayAll: function () {
       this.judgeAccount();
-      let amount = item.remainInterest + item.remainAmount + this.computePenalty(item);
+      let amount = this.remainInterest + this.remainAmount + this.penalty;
       if (!this.formHasErrors) {
-        let api = `/customer/loan/bill/${item.id}/payment`;
+        let api = `/customer/loan/bill/${this.itemId}/payment`;
         this.$axios.put(api, {
           accountNum: this.accountNum,
           password: this.password,
           amount: amount
-        }).then(resp => {
-          if (resp.data.code === 200) {
-            this.app.message(resp.data.message);
-            this.getBills();
-          } else {
-            this.app.message("系统出现故障");
-          }
         })
+          .then(resp => {
+            console.log(resp);
+            if (resp.data.code === 200) {
+              this.app.message(resp.data.message);
+              this.getBills();
+            } else {
+              this.app.message(resp.data.message);
+              this.getBills();
+            }
+          })
+          .catch(() => {
+            this.app.message("账户余额不足或账户不存在");
+          })
         this.closeRepayAllDialog();
       }
 
