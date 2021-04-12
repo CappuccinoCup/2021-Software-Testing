@@ -20,8 +20,7 @@
       overlay: false,
       showSnackbar: false,
       snackbarMessage: '',
-      snackbarType: '',
-      systemTime: null,
+      snackbarType: ''
     }),
     computed: {
       isDark: function () {
@@ -49,13 +48,13 @@
           this.$axios.get('/system/time')
             .then(resp => {
               if (resp.data.code === 200) {
-                this.systemTime = new Date(resp.data.data);
+                this.$store.commit('systemTime', new Date(resp.data.data));
               } else {
-                this.systemTime = new Date();
+                this.$store.commit('systemTime', new Date());
               }
             })
             .catch(() => {
-              this.systemTime = new Date();
+              this.$store.commit('systemTime', new Date());
             });
         }
         setTimeout(() => {
@@ -67,7 +66,7 @@
         // 则直接退出登录
         if (this.$store.state.token && this.$store.state.expires) {
           let expires = new Date(this.$store.state.expires);
-          let now = this.systemTime;
+          let now = this.$store.state.systemTime;
           if (now && now >= expires) {
             this.$store.commit("logout");
           }
