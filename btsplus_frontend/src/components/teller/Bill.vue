@@ -24,68 +24,6 @@
                 </v-icon>
               </template>
               <span>部分还款</span>
-              <!--部分还款dialog-->
-              <v-dialog
-                transition="dialog-bottom-transition"
-                max-width="700px"
-                v-model="repayPartDialog"
-              >
-                <template>
-                  <v-card>
-                    <v-toolbar
-                      color="primary"
-                      dark
-                    >部分还款
-                    </v-toolbar>
-                    <v-card-text class="mt-5">
-                      <v-row>
-                        <v-col cols="6"><b>计划本金: </b>{{ item.planAmount }}</v-col>
-                        <v-col cols="6"><b>实际本金: </b>{{ item.remainAmount }}</v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col><b>计划利息: </b>{{ item.planInterest }}</v-col>
-                        <v-col><b>实际利息: </b>{{ item.remainInterest }}</v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col><b>计划总计: </b>{{ item.planAmount + item.planInterest }}</v-col>
-                        <v-col><b>实际总计: </b>{{ item.remainAmount + item.remainInterest }}</v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="6"><b>罚金: </b>{{ computePenalty(item) }}</v-col>
-                        <v-col cols="5">
-                          <v-text-field label="还款金额" dense outlined v-model="partAmount"></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row justify="center">
-                        <v-col cols="12">
-                          <v-row>
-                            <v-col cols="6">
-                              <v-text-field v-model="accountNum" label="银行账号" append-icon="mdi-account" dense
-                                            outlined></v-text-field>
-                            </v-col>
-                            <v-col cols="6">
-                              <v-text-field v-model="password" label="password" append-icon="mdi-fingerprint" dense
-                                            outlined></v-text-field>
-                            </v-col>
-                          </v-row>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                    <v-card-actions class="justify-end">
-                      <v-btn
-                        text
-                        @click="repayPart(item)"
-                      >还款
-                      </v-btn>
-                      <v-btn
-                        text
-                        @click="closeRepayPartDialog"
-                      >取消
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </template>
-              </v-dialog>
             </v-tooltip>
 
 
@@ -97,67 +35,7 @@
                 </v-icon>
               </template>
               <span>全额还款</span>
-              <!--全额还款dialog-->
-              <v-dialog
-                transition="dialog-bottom-transition"
-                max-width="700px"
-                v-model="repayAllDialog"
-              >
-                <template>
-                  <v-card>
-                    <v-toolbar
-                      color="primary"
-                      dark
-                    >全额还款
-                    </v-toolbar>
-                    <v-card-text class="mt-5">
-                      <v-row>
-                        <v-col cols="6"><b>计划本金: </b>{{ item.planAmount }}</v-col>
-                        <v-col cols="6"><b>实际本金: </b>{{ item.remainAmount }}</v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col><b>计划利息: </b>{{ item.planInterest }}</v-col>
-                        <v-col><b>实际利息: </b>{{ item.remainInterest }}</v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col><b>计划总计: </b>{{ item.planAmount + item.planInterest }}</v-col>
-                        <v-col><b>实际总计: </b>{{ item.remainAmount + item.remainInterest }}</v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="6"></v-col>
-                        <v-col cols="6"><b>罚金: </b>{{ computePenalty(item) }}</v-col>
-                      </v-row>
-                      <v-row justify="center">
-                        <v-col cols="12">
-                          <v-row>
-                            <v-col cols="5">
-                              <v-text-field v-model="accountNum" label="银行账号" append-icon="mdi-account" outlined
-                                            dense></v-text-field>
-                            </v-col>
-                            <v-col cols="5">
-                              <v-text-field v-model="password" label="password" append-icon="mdi-fingerprint" outlined
-                                            dense></v-text-field>
-                            </v-col>
-                          </v-row>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
 
-                    <v-card-actions class="justify-end">
-                      <v-btn
-                        text
-                        @click="repayAll(item)"
-                      >还款
-                      </v-btn>
-                      <v-btn
-                        text
-                        @click="closeRepayAllDialog"
-                      >取消
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </template>
-              </v-dialog>
             </v-tooltip>
 
           </template>
@@ -177,6 +55,130 @@
       </v-card-text>
     </v-card>
 
+    <!--部分还款dialog-->
+    <v-dialog
+      transition="dialog-bottom-transition"
+      max-width="700px"
+      v-model="repayPartDialog"
+    >
+      <template>
+        <v-card>
+          <v-toolbar
+            color="primary"
+            dark
+          >部分还款
+          </v-toolbar>
+          <v-card-text class="mt-5">
+            <v-row>
+              <v-col cols="6"><b>计划本金: </b>{{ item.planAmount }}</v-col>
+              <v-col cols="6"><b>实际本金: </b>{{ item.remainAmount }}</v-col>
+            </v-row>
+            <v-row>
+              <v-col><b>计划利息: </b>{{ item.planInterest }}</v-col>
+              <v-col><b>实际利息: </b>{{ item.remainInterest }}</v-col>
+            </v-row>
+            <v-row>
+              <v-col><b>计划总计: </b>{{ item.planAmount + item.planInterest }}</v-col>
+              <v-col><b>实际总计: </b>{{ item.remainAmount + item.remainInterest }}</v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6"><b>罚金: </b>{{ computePenalty(item) }}</v-col>
+              <v-col cols="5">
+                <v-text-field label="还款金额" dense outlined v-model="partAmount"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row justify="center">
+              <v-col cols="12">
+                <v-row>
+                  <v-col cols="6">
+                    <v-text-field v-model="accountNum" label="银行账号" append-icon="mdi-account" dense
+                                  outlined></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-text-field v-model="password" label="password" append-icon="mdi-fingerprint" dense
+                                  outlined></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn
+              text
+              @click="repayPart(item)"
+            >还款
+            </v-btn>
+            <v-btn
+              text
+              @click="closeRepayPartDialog"
+            >取消
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
+
+    <!--全额还款dialog-->
+    <v-dialog
+      transition="dialog-bottom-transition"
+      max-width="700px"
+      v-model="repayAllDialog"
+    >
+      <template>
+        <v-card>
+          <v-toolbar
+            color="primary"
+            dark
+          >全额还款
+          </v-toolbar>
+          <v-card-text class="mt-5">
+            <v-row>
+              <v-col cols="6"><b>计划本金: </b>{{ item.planAmount }}</v-col>
+              <v-col cols="6"><b>实际本金: </b>{{ item.remainAmount }}</v-col>
+            </v-row>
+            <v-row>
+              <v-col><b>计划利息: </b>{{ item.planInterest }}</v-col>
+              <v-col><b>实际利息: </b>{{ item.remainInterest }}</v-col>
+            </v-row>
+            <v-row>
+              <v-col><b>计划总计: </b>{{ item.planAmount + item.planInterest }}</v-col>
+              <v-col><b>实际总计: </b>{{ item.remainAmount + item.remainInterest }}</v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6"></v-col>
+              <v-col cols="6"><b>罚金: </b>{{ computePenalty(item) }}</v-col>
+            </v-row>
+            <v-row justify="center">
+              <v-col cols="12">
+                <v-row>
+                  <v-col cols="5">
+                    <v-text-field v-model="accountNum" label="银行账号" append-icon="mdi-account" outlined
+                                  dense></v-text-field>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-text-field v-model="password" label="password" append-icon="mdi-fingerprint" outlined
+                                  dense></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card-text>
+
+          <v-card-actions class="justify-end">
+            <v-btn
+              text
+              @click="repayAll(item)"
+            >还款
+            </v-btn>
+            <v-btn
+              text
+              @click="closeRepayAllDialog"
+            >取消
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
 
   </v-container>
 </template>
