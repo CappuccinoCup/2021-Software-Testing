@@ -120,7 +120,7 @@ export default {
     }).then(resp => {
       if (resp.data.code === 200) {
         let data = resp.data.data;
-        console.log(data);
+        //console.log(data);
         if (data.length === 0) {
           this.app.message('目前没有贷款账户');
         } else {
