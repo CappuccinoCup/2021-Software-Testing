@@ -8,7 +8,8 @@ export default new Vuex.Store({
     token: localStorage.getItem('token') || null,
     expires: localStorage.getItem('expires') || null,
     userDetails: JSON.parse(localStorage.getItem('userDetails')) || null,
-    systemTime: new Date(localStorage.getItem('systemTime')) || new Date(),
+    systemTime: localStorage.getItem('systemTime') ?
+      new Date(localStorage.getItem('systemTime')) : new Date(),
     themeIsDark: localStorage.getItem('theme') === 'dark'
   },
   mutations: {

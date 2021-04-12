@@ -304,17 +304,17 @@ export default {
     judgeAccount: function () {
       let amount = this.remainInterest + this.remainAmount + this.penalty;
       if (this.isNumber(this.partAmount)) {
-        this.app.message("还款金额需是数字");
+        this.app.message("还款金额需是数字", 'warning');
         this.formHasErrors = true;
       } else if (this.partAmount > amount) {
-        this.app.message("超过所需还款的额度")
+        this.app.message("超过所需还款的额度", 'warning');
         this.formHasErrors = true;
       } else if (this.accountNum === "") {
         this.formHasErrors = true;
-        this.app.message("银行账户不能为空");
+        this.app.message("银行账户不能为空", 'warning');
       } else if (this.password === "") {
         this.formHasErrors = true;
-        this.app.message("密码不能为空");
+        this.app.message("密码不能为空", 'warning');
       } else {
         this.formHasErrors = false;
       }
@@ -354,7 +354,7 @@ export default {
     checkPartAmount: function () {
       let amount = this.remainInterest + this.remainAmount + this.penalty;
       if (this.partAmount > amount) {
-        this.app.message("超过所需还款的额度")
+        this.app.message("超过所需还款的额度", 'warning');
         this.partAmount = amount;
       }
     },
@@ -369,14 +369,14 @@ export default {
           amount: this.partAmount
         }).then(resp => {
           if (resp.data.code === 200) {
-            this.app.message(resp.data.message);
+            this.app.message(resp.data.message, 'success');
             this.getBills();
           } else {
-            this.app.message("系统出现故障");
+            this.app.message("系统出现故障", 'error');
           }
         })
           .catch(() => {
-            this.app.message("账户余额不足或账户不存在");
+            this.app.message("账户余额不足或账户不存在", 'error');
           })
         this.closeRepayPartDialog();
       }
@@ -396,15 +396,15 @@ export default {
           .then(resp => {
             console.log(resp);
             if (resp.data.code === 200) {
-              this.app.message(resp.data.message);
+              this.app.message(resp.data.message, 'success');
               this.getBills();
             } else {
-              this.app.message(resp.data.message);
+              this.app.message(resp.data.message, 'error');
               this.getBills();
             }
           })
           .catch(() => {
-            this.app.message("账户余额不足或账户不存在");
+            this.app.message("账户余额不足或账户不存在", 'error');
           })
         this.closeRepayAllDialog();
       }
@@ -425,7 +425,7 @@ export default {
         if (resp.data.code === 200) {
           let data = resp.data.data;
           if (data.length === 0) {
-            this.app.message("该贷款账户无账单");
+            this.app.message("该贷款账户无账单", 'warning');
           } else {
             let bills = [];
             for (let i = 0; i < data.length; i++) {

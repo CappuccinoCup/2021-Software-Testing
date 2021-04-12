@@ -43,18 +43,15 @@
         this.snackbarType = type;
       },
       getTime() {
-        // 从后端获取系统时间，如果未登录则不获取
-        if (this.$store.state.token) {
-          this.$axios.get('/system/time')
-            .then(resp => {
-              if (resp.data.code === 200) {
-                this.$store.commit('systemTime', resp.data.data);
-              }
-            })
-            .catch(() => {
+        this.$axios.get('/system/time')
+          .then(resp => {
+            if (resp.data.code === 200) {
+              this.$store.commit('systemTime', resp.data.data);
+            }
+          })
+          .catch(() => {
 
-            });
-        }
+          });
         setTimeout(() => {
           this.getTime();
         }, 60000)
