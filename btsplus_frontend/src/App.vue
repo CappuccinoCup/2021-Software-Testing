@@ -48,13 +48,11 @@
           this.$axios.get('/system/time')
             .then(resp => {
               if (resp.data.code === 200) {
-                this.$store.commit('systemTime', new Date(resp.data.data));
-              } else {
-                this.$store.commit('systemTime', new Date());
+                this.$store.commit('systemTime', resp.data.data);
               }
             })
             .catch(() => {
-              this.$store.commit('systemTime', new Date());
+
             });
         }
         setTimeout(() => {
