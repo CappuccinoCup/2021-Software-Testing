@@ -384,14 +384,14 @@ export default {
     },
 
     repayAll: function () {
+      this.partAmount = this.remainInterest + this.remainAmount + this.penalty;
       this.judgeAccount();
-      let amount = this.remainInterest + this.remainAmount + this.penalty;
       if (!this.formHasErrors) {
         let api = `/customer/loan/bill/${this.itemId}/payment`;
         this.$axios.put(api, {
           accountNum: this.accountNum,
           password: this.password,
-          amount: amount
+          amount: this.partAmount
         })
           .then(resp => {
             console.log(resp);
